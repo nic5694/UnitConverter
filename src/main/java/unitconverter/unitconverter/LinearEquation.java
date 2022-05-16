@@ -1,4 +1,13 @@
 package unitconverter.unitconverter;
 
-public class LinearEquation extends Unit{
+import java.lang.constant.Constable;
+
+public class LinearEquation{
+    private double constant;
+    private double factor;
+    public LinearEquation(double constant, double factor){
+        this.constant=constant;
+        this.factor=factor;
+    }
+
 }
