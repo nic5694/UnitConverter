@@ -64,7 +64,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>unitconverter.unitconverter/unitconverter.unitconverter.HelloApplication
+                            <mainClass>unitconverter.unitconverter/unitconverter.unitconverter.Main
                             </mainClass>
                             <launcher>app</launcher>
                             <jlinkZipName>app</jlinkZipName>
