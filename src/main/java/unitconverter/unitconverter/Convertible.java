@@ -1,5 +1,5 @@
 package unitconverter.unitconverter;
 
 public interface Convertible {
-    double convert(double amount, Unit toUnit);
+    double convert(String fromUnit, String toUnit, double amount);
 }
