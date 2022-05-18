@@ -92,7 +92,7 @@ public class LengthTest {
     }
 
     @Test
-    public void Length_ConversionTest_MiletoMM() {
+    public void Length_ConversionTest_MILEtoMM() {
         Length l1 = new Length();
         double value = l1.convert("mm", "mile", 1609344);
         assertEquals(1, value);
@@ -114,7 +114,7 @@ public class LengthTest {
     }
 
     @Test
-    public void Length_ConversionTest_MtocM(){
+    public void Length_ConversionTest_MtoCM(){
         Length l1 = new Length();
         double value = l1.convert("m","cm",1);
         assertEquals(100, value);
