@@ -1,6 +1,5 @@
 package unitconverter.unitconverter;
 
-import java.text.DecimalFormat;
 import java.util.Hashtable;
 import java.util.Locale;
 
@@ -15,6 +14,6 @@ public abstract class Unit implements Convertible{
         //TODO maybe implement try catch or try catch in javaFx application
         double finalAmount=conversionrates.get(toUnit.toLowerCase(Locale.ROOT)).evaluateFromBaseline(baselineAmount);
 
-        return Math.round(finalAmount);
+        return finalAmount;
     }
 }
