@@ -2,7 +2,8 @@ package unitconverter.unitconverter;
 
 public class Mass extends Unit{
     public Mass() {
-        //ADD second conversion table (one tabble to baseline) (basleines to table)
+        //adding conversion rates to the hashtable
+        //the factors are the factors needed to convert to the main unit of measurement kg
         conversionrates.put("mg", new LinearEquation(0,0.000001));
         conversionrates.put("g", new LinearEquation(0,0.001));
         conversionrates.put("kg", new LinearEquation(0,1));
