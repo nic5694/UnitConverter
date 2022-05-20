@@ -3,35 +3,25 @@ package unitconverter.unitconverter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Objects;
 
 public class Main extends Application {
     String selectedunit="";
     private String instructionstext="Select the unit you would like to convert from and \n" +
             " the unit you want to convert to below: ";
-    private final ComboBox fromUnitList = new ComboBox();
-    private final ComboBox toUnitList = new ComboBox();
+    private final ComboBox<String> fromUnitList = new ComboBox<>();
+    private final ComboBox<String> toUnitList = new ComboBox<>();
+    Label convamount = new Label("Converted Value: ");
 
-    /*
-    private final SplitMenuButton fromUnitList = new SplitMenuButton();
-    private final SplitMenuButton toUnitList = new SplitMenuButton();
-
-     */
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage) {
         ///Setting stage
         stage.setTitle("Unit Conversion");
         stage.setWidth(800);
@@ -61,7 +51,7 @@ public class Main extends Application {
                     "Mass",
                     "Length"
         );
-        ComboBox unittypeselector = new ComboBox(units);
+        ComboBox<String> unittypeselector = new ComboBox<>(units);
         HBox uspane = new HBox(unittypeselector);
 
         //setting label and styling
@@ -74,7 +64,8 @@ public class Main extends Application {
 
         //setting action event on the combo box when an item is clicked
         unittypeselector.setOnMouseClicked(mouseEvent -> {
-            selectedunit = (String) unittypeselector.getValue();
+            //TODO check maybe for a changre listner
+            selectedunit = unittypeselector.getValue();
             instructionstext = "Select the " + selectedunit + " unit you would like to convert from and \n" +
                     " the unit you want to convert to below: ";
 
@@ -112,43 +103,96 @@ public class Main extends Application {
                     "long ton (UK)"
             );
             if(selectedunit!=null) {
+
                 switch (selectedunit) {
-                    case "Speed":
+                    case "Speed" -> {
+                        fromUnitList.show();
                         fromUnitList.setItems(speed);
+                        toUnitList.show();
                         toUnitList.setItems(speed);
-                        break;
-                    case "Length":
+                    }
+                    case "Length" -> {
+                        fromUnitList.show();
                         fromUnitList.setItems(length);
+                        toUnitList.show();
                         toUnitList.setItems(length);
-                        break;
-                    case "Mass":
+                    }
+                    case "Mass" -> {
+                        fromUnitList.show();
                         fromUnitList.setItems(mass);
+                        toUnitList.show();
                         toUnitList.setItems(mass);
-                        break;
+                    }
                 }
+            }
+            else {
+                fromUnitList.hide();
+                toUnitList.hide();
             }
         });
         //setting string and making sure it does not return null in the text field placeholder.
-        String targetUnit=(String) toUnitList.getValue();
-        if (targetUnit==null)
-            targetUnit="";
+
 
         //Setting text field and text-field placeholder
-        TextField amount = new TextField("Enter the amount you would like to convert to " + targetUnit);
+        TextField amount = new TextField();
 
 
-        //setting converted amount label
-        Label convamount = new Label("Converted Value: ");
+
 
         //adding elements to the layout HBox
         HBox conversionPane = new HBox(amount, fromUnitList, convamount, toUnitList);
 
+        //setting the convert button
+        Button convert = new Button("Convert");
+        convert.setOnAction(actionEvent -> {
+            if(amount.getText().isEmpty()){
+                //adding an alert to make sure that the user enters an entry
+                Alert blank = new Alert(Alert.AlertType.INFORMATION);
+                blank.setTitle("Invalid Entry!");
+                blank.setHeaderText("You have not entered a value to be converted.");
+                blank.setContentText("Please make sure to choose the unit you would like to convert from and convert " +
+                        "too as well as entering a valid number in the text field.");
+                blank.showAndWait();
+            }
+            double damount;
+            try {
+                damount = Double.parseDouble(amount.getText());
+            } catch (NumberFormatException e){
+                //catching exception is user does not enter a valid entry
+                e.printStackTrace();
+                Alert invalidEntry = new Alert(Alert.AlertType.INFORMATION);
+                invalidEntry.setTitle("Invalid Entry!");
+                invalidEntry.setHeaderText("You have not entered numbers.");
+                invalidEntry.setContentText("Please make sure to enter valid numbers or decimal numbers.");
+                invalidEntry.showAndWait();
+                return;
+            }
+            String fromUnit = fromUnitList.getValue();
+            String toUnit = toUnitList.getValue();
+            //Converting the values to the corresponding units
+            switch (selectedunit) {
+                case "Speed" -> {
+                    Speed s1 = new Speed();
+                    convamount.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
+                }
+                case "Length" -> {
+                    Length l1 = new Length();
+                    l1.convert(fromUnit, toUnit, damount);
+                }
+                case "Mass" -> {
+                    Mass m1 = new Mass();
+                    m1.convert(fromUnit, toUnit, damount);
+                }
+            }
+        });
+
+        HBox convertPane = new HBox(convert);
 
 
 
 
 
-        root.getChildren().addAll(title, uspane, instructionspane, conversionPane);
+        root.getChildren().addAll(title, uspane, instructionspane, conversionPane, convertPane);
         root.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         Scene scene = new Scene(root);
         stage.setScene(scene);
