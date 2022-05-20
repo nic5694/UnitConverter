@@ -9,7 +9,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
-
 import java.util.Objects;
 
 public class Main extends Application {
@@ -103,7 +102,7 @@ public class Main extends Application {
                     "long ton (UK)"
             );
             if(selectedunit!=null) {
-
+                //setting dropdowns for the units available to convert
                 switch (selectedunit) {
                     case "Speed" -> {
                         fromUnitList.show();
@@ -130,14 +129,9 @@ public class Main extends Application {
                 toUnitList.hide();
             }
         });
-        //setting string and making sure it does not return null in the text field placeholder.
 
-
-        //Setting text field and text-field placeholder
+        //Setting text field
         TextField amount = new TextField();
-
-
-
 
         //adding elements to the layout HBox
         HBox conversionPane = new HBox(amount, fromUnitList, convamount, toUnitList);
@@ -165,6 +159,7 @@ public class Main extends Application {
                 invalidEntry.setHeaderText("You have not entered numbers.");
                 invalidEntry.setContentText("Please make sure to enter valid numbers or decimal numbers.");
                 invalidEntry.showAndWait();
+                amount.setText("");
                 return;
             }
             String fromUnit = fromUnitList.getValue();
