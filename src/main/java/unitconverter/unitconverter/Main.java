@@ -60,7 +60,6 @@ public class Main extends Application {
         HBox instructionspane = new HBox(instructions);
 
 
-
         //setting action event on the combo box when an item is clicked
         unittypeselector.setOnMouseClicked(mouseEvent -> {
             //TODO check maybe for a changre listner
@@ -102,7 +101,7 @@ public class Main extends Application {
                     "long ton (UK)"
             );
             if(selectedunit!=null) {
-                //setting dropdowns for the units available to convert
+                //setting dropdowns for the type opf conversion chosen by the user
                 switch (selectedunit) {
                     case "Speed" -> {
                         fromUnitList.show();
@@ -139,6 +138,7 @@ public class Main extends Application {
         //setting the convert button
         Button convert = new Button("Convert");
         convert.setOnAction(actionEvent -> {
+            double damount=0;
             if(amount.getText().isEmpty()){
                 //adding an alert to make sure that the user enters an entry
                 Alert blank = new Alert(Alert.AlertType.INFORMATION);
@@ -147,47 +147,49 @@ public class Main extends Application {
                 blank.setContentText("Please make sure to choose the unit you would like to convert from and convert " +
                         "too as well as entering a valid number in the text field.");
                 blank.showAndWait();
-            }
-            double damount;
-            try {
-                damount = Double.parseDouble(amount.getText());
-            } catch (NumberFormatException e){
-                //catching exception is user does not enter a valid entry
-                e.printStackTrace();
+                //checking if user enters a valid entry
+            }else if(amount.getText().matches("^/d*$")) {
+                try {
+                    damount = Double.parseDouble(amount.getText());
+                } catch (NumberFormatException e) {
+                    //catching exception
+                    e.printStackTrace();
+                }
+
+                String fromUnit = fromUnitList.getValue();
+                String toUnit = toUnitList.getValue();
+
+                //Converting the values to the corresponding units
+                switch (selectedunit) {
+                    case "Speed" -> {
+                        Speed s1 = new Speed();
+                        convamount.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
+                    }
+                    case "Length" -> {
+                        Length l1 = new Length();
+                        l1.convert(fromUnit, toUnit, damount);
+                    }
+                    case "Mass" -> {
+                        Mass m1 = new Mass();
+                        m1.convert(fromUnit, toUnit, damount);
+                    }
+                }
+            } else {
                 Alert invalidEntry = new Alert(Alert.AlertType.INFORMATION);
                 invalidEntry.setTitle("Invalid Entry!");
-                invalidEntry.setHeaderText("You have not entered numbers.");
+                invalidEntry.setHeaderText("You have not entered a valid entry.");
                 invalidEntry.setContentText("Please make sure to enter valid numbers or decimal numbers.");
                 invalidEntry.showAndWait();
                 amount.setText("");
-                return;
-            }
-            String fromUnit = fromUnitList.getValue();
-            String toUnit = toUnitList.getValue();
-            //Converting the values to the corresponding units
-            switch (selectedunit) {
-                case "Speed" -> {
-                    Speed s1 = new Speed();
-                    convamount.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
-                }
-                case "Length" -> {
-                    Length l1 = new Length();
-                    l1.convert(fromUnit, toUnit, damount);
-                }
-                case "Mass" -> {
-                    Mass m1 = new Mass();
-                    m1.convert(fromUnit, toUnit, damount);
-                }
             }
         });
 
+        //setting the pane for the convert button
         HBox convertPane = new HBox(convert);
 
-
-
-
-
+        //adding all layout panes to the root layout node
         root.getChildren().addAll(title, uspane, instructionspane, conversionPane, convertPane);
+        //adding bootstrap stylesheet
         root.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         Scene scene = new Scene(root);
         stage.setScene(scene);
