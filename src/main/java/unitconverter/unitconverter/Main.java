@@ -3,106 +3,86 @@ package unitconverter.unitconverter;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
+
+import java.util.Locale;
 import java.util.Objects;
 
 public class Main extends Application {
-    String selectedunit="";
-    private String instructionstext="Select the unit you would like to convert from and \n" +
-            " the unit you want to convert to below: ";
+    String selectedUnit ="";
     private final ComboBox<String> fromUnitList = new ComboBox<>();
     private final ComboBox<String> toUnitList = new ComboBox<>();
     Label convamount = new Label("Converted Value: ");
 
+    private final String [] speedUnitsList = {"m/s", "ft/s", "km/h", "mph", "kn"};
+
+    private final String [] lengthUnitsList = {"mm", "cm", "in", "ft", "yd", "m", "km", "mile"};
+
+    private final String [] massUnitsList = {"mg", "g", "oz", "lb", "kg", "stone", "metric ton", "short ton (US)",
+            "long ton (UK)"};
+
+    private final String [] unitsList = {"Speed", "Mass", "Length"};
+
     @Override
     public void start(Stage stage) {
         ///Setting stage
-        stage.setTitle("Unit Conversion");
+        stage.setTitle("Unit Converter");
         stage.setWidth(800);
         stage.setHeight(500);
         stage.setResizable(false);
         stage.centerOnScreen();
 
         //Creating root layout pane
-        VBox root = new VBox();
-
-        //Creating css sheet link
-        String csslink = Objects.requireNonNull(getClass().getResource("/css/style.css")).toExternalForm();
-        root.getStylesheets().add(csslink);
+        VBox root = new VBox(30);
 
         //setting and placing title
         HBox title = new HBox(new Label("Welcome to your personal unit converter!"));
-        //title.setAlignment(Pos.CENTER);
+
         //setting style for the title
         title.getStyleClass().addAll("text", "h1", "strong");
 
 
-
         //Maybe put the unit names in an array list or find a way to get all the names that extend UNIT
         //setting the combo box and adding it to the layout
-        ObservableList <String> units = FXCollections.observableArrayList(
-                "Speed",
-                    "Mass",
-                    "Length"
-        );
-        ComboBox<String> unittypeselector = new ComboBox<>(units);
-        HBox uspane = new HBox(unittypeselector);
+        ObservableList <String> units = FXCollections.observableArrayList(unitsList);
+        ComboBox<String> unitTypeSelector = new ComboBox<>(units);
+        HBox selectorPane = new HBox(unitTypeSelector);
 
         //setting label and styling
-        Label instructions = new Label(instructionstext);
+        Label instructions = new Label("Select the unit you would like to convert from and \n" +
+                " the unit you want to convert to below: ");
         instructions.getStyleClass().addAll("text", "h3", "strong");
         instructions.wrapTextProperty();
         HBox instructionspane = new HBox(instructions);
 
 
-        //setting action event on the combo box when an item is clicked
-        unittypeselector.setOnMouseClicked(mouseEvent -> {
-            //TODO check maybe for a changre listner
-            selectedunit = unittypeselector.getValue();
-            instructionstext = "Select the " + selectedunit + " unit you would like to convert from and \n" +
-                    " the unit you want to convert to below: ";
+            //creating the action dropdownClickEvent
+            EventHandler<ActionEvent> dropdownClickEvent = new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+            selectedUnit = unitTypeSelector.getValue();
+            instructions.setText("Select the " + selectedUnit.toLowerCase(Locale.ROOT) + " unit you would like to convert from and \n" +
+                    " the unit you want to convert to below: ");
 
             //units dropdown speed class
-            ObservableList <String> speed = FXCollections.observableArrayList(
-                    "m/s",
-                    "ft/s",
-                    "km/h",
-                    "mph",
-                    "kn"
-            );
-
+            ObservableList <String> speed = FXCollections.observableArrayList(speedUnitsList);
             //units dropdown length class
-            ObservableList <String> length = FXCollections.observableArrayList(
-                    "mm",
-                    "cm",
-                    "in",
-                    "ft",
-                    "yd",
-                    "m",
-                    "km",
-                    "mile"
-            );
-
+            ObservableList <String> length = FXCollections.observableArrayList(lengthUnitsList);
             //units dropdown mass class
-            ObservableList <String> mass = FXCollections.observableArrayList(
-                    "mg",
-                    "g",
-                    "oz",
-                    "lb",
-                    "kg",
-                    "stone",
-                    "metric ton",
-                    "short ton (US)",
-                    "long ton (UK)"
-            );
-            if(selectedunit!=null) {
-                //setting dropdowns for the type opf conversion chosen by the user
-                switch (selectedunit) {
+            ObservableList <String> mass = FXCollections.observableArrayList(massUnitsList);
+
+            if(selectedUnit !=null) {
+                //setting dropdowns for the type of Unit conversion chosen by the user
+                switch (selectedUnit) {
                     case "Speed" -> {
                         fromUnitList.show();
                         fromUnitList.setItems(speed);
@@ -127,7 +107,11 @@ public class Main extends Application {
                 fromUnitList.hide();
                 toUnitList.hide();
             }
-        });
+                }
+            };
+
+            //setting on action
+        unitTypeSelector.setOnAction(dropdownClickEvent);
 
         //Setting text field
         TextField amount = new TextField();
@@ -148,7 +132,7 @@ public class Main extends Application {
                         "too as well as entering a valid number in the text field.");
                 blank.showAndWait();
                 //checking if user enters a valid entry
-            }else if(amount.getText().matches("^/d*$")) {
+            }else if(amount.getText().matches("^([0-9]+\\.?[0-9]*)$")) {
                 try {
                     damount = Double.parseDouble(amount.getText());
                 } catch (NumberFormatException e) {
@@ -160,18 +144,18 @@ public class Main extends Application {
                 String toUnit = toUnitList.getValue();
 
                 //Converting the values to the corresponding units
-                switch (selectedunit) {
+                switch (selectedUnit) {
                     case "Speed" -> {
                         Speed s1 = new Speed();
                         convamount.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Length" -> {
                         Length l1 = new Length();
-                        l1.convert(fromUnit, toUnit, damount);
+                        convamount.setText(Double.toString(l1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
-                        m1.convert(fromUnit, toUnit, damount);
+                        convamount.setText(Double.toString(m1.convert(fromUnit, toUnit, damount)));
                     }
                 }
             } else {
@@ -188,10 +172,13 @@ public class Main extends Application {
         HBox convertPane = new HBox(convert);
 
         //adding all layout panes to the root layout node
-        root.getChildren().addAll(title, uspane, instructionspane, conversionPane, convertPane);
-        //adding bootstrap stylesheet
-        root.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        root.getChildren().addAll(title, selectorPane, instructionspane, conversionPane, convertPane);
+
         Scene scene = new Scene(root);
+
+        //adding bootstrap stylesheet
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+
         stage.setScene(scene);
         stage.show();
     }
