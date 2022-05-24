@@ -2,10 +2,9 @@ package unitconverter.unitconverter;
 
 import org.junit.jupiter.api.Test;
 
-import unitconverter.unitconverter.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MainTest {
+public class FormatTest {
     @Test
     public void Format_Testing_Formating_Numbers1 (){
         Format f1 = new Format();
