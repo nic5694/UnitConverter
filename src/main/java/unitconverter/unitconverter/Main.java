@@ -5,11 +5,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import java.util.Locale;
@@ -26,23 +28,18 @@ check for comments left behind and take out the TODO's
  */
 
 public class Main extends Application {
-    String selectedUnit ="";
+    private String selectedUnit ="";
     private final ComboBox<String> fromUnitList = new ComboBox<>();
     private final ComboBox<String> toUnitList = new ComboBox<>();
-
     private final Label convertedAnswer = new Label();
     private final String [] speedUnitsList = {"m/s", "ft/s", "km/h", "mph", "kn"};
-
     private final String [] lengthUnitsList = {"mm", "cm", "in", "ft", "yd", "m", "km", "mile"};
-
     private final String [] massUnitsList = {"mg", "g", "oz", "lb", "kg", "stone", "mt", "st",
             "lt"};
-
     private final String [] unitsList = {"Speed", "Mass", "Length"};
-
     private final String infoString = "Select the unit you would like to convert from and \n" +
             " the unit you want to convert to below: ";
-    TextField amount = new TextField();
+    private TextField amount = new TextField();
 
     @Override
     public void start(Stage stage) {
@@ -56,8 +53,6 @@ public class Main extends Application {
         //Creating root layout pane
         VBox root = new VBox(30);
 
-
-
         //setting label
         Label headerTitle = new Label("Dimensional Analysis Calculator");
         headerTitle.setStyle("-fx-text-fill: #cfdbd5");
@@ -70,7 +65,7 @@ public class Main extends Application {
         title.setAlignment(Pos.CENTER);
 
         //Adding label for unit drop-down
-        Label unitLabel = new Label("Unit type you would like to be converting: ");
+        Label unitLabel = new Label("Unit type you would like to be converting : ");
         unitLabel.setStyle("-fx-text-fill: #f5cb5c");
 
         //placing and setting the combo box and adding it to the layout with the label
@@ -81,10 +76,11 @@ public class Main extends Application {
 
         //placing, setting label and styling for the information paragraph
         Label instructionsLabel = new Label(infoString);
+        instructionsLabel.setTextAlignment(TextAlignment.CENTER);
         instructionsLabel.getStyleClass().addAll("text", "h3", "strong");
         instructionsLabel.setStyle("-fx-text-fill: #cfdbd5");
-        HBox instructionspane = new HBox(instructionsLabel);
-        instructionspane.setAlignment(Pos.CENTER);
+        HBox instructionsPane = new HBox(instructionsLabel);
+        instructionsPane.setAlignment(Pos.CENTER);
 
 
             //creating the action dropdownClickEvent
@@ -136,8 +132,7 @@ public class Main extends Application {
             //setting on action
         unitTypeSelector.setOnAction(dropdownClickEvent);
 
-        //Setting text prompt
-        amount.setPromptText("Converting unit value");
+        amount.setPromptText("converting unit value");
 
         //creating and styling the print significant digit checkbox
         CheckBox significantDigits = new CheckBox("Print only significant digits");
@@ -162,10 +157,19 @@ public class Main extends Application {
                 blank.setTitle("Invalid Entry!");
                 blank.setHeaderText("You have not entered a value to be converted.");
                 blank.setContentText("Please make sure to choose the unit you would like to convert from and convert " +
-                        "too as well as entering a valid number in the text field.");
+                        "too as well as entering a valid number in the text field. Please try again ;)");
                 blank.showAndWait();
+                //checking if selection has been made
+            } else if (fromUnitList.getValue()==null || toUnitList.getValue()==null) {
+                Alert nullConversionUnits = new Alert(Alert.AlertType.INFORMATION);
+                nullConversionUnits.setTitle("Invalid Selection");
+                nullConversionUnits.setHeaderText("You have not chosen your conversion units.");
+                nullConversionUnits.setContentText("Please make sure to choose the unit type you would like to convert " +
+                        "and the unit you would like to convert from and convert to before clicking the convert " +
+                        "button. Please try again ;)");
+                nullConversionUnits.showAndWait();
                 //checking if user enters a valid entry
-            }else if(amount.getText().matches("^(\\d+\\.?\\d*)$")) {
+            } else if(amount.getText().matches("^(\\d+\\.?\\d*)$")) {
                 try {
                     damount = Double.parseDouble(amount.getText());
                 } catch (NumberFormatException e) {
@@ -185,21 +189,21 @@ public class Main extends Application {
                         if (significantDigits.isSelected())
                         convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)));
                         else
-                            convertedAnswer.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
+                            convertedAnswer.setText("Converted Value: " + s1.convert(fromUnit, toUnit, damount));
                     }
                     case "Length" -> {
                         Length l1 = new Length();
                         if (significantDigits.isSelected())
                             convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)));
                         else
-                            convertedAnswer.setText(Double.toString(l1.convert(fromUnit, toUnit, damount)));
+                            convertedAnswer.setText("Converted Value: " + l1.convert(fromUnit, toUnit, damount));
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
                         if (significantDigits.isSelected())
                             convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)));
                         else
-                            convertedAnswer.setText(Double.toString(m1.convert(fromUnit, toUnit, damount)));
+                            convertedAnswer.setText("Converted Value: " + m1.convert(fromUnit, toUnit, damount));
                     }
                 }
             } else {
@@ -212,15 +216,14 @@ public class Main extends Application {
             }
         });
 
-
-        //setting the reset button
+        //setting the reset button and its actions
         Button clear = new Button("clear");
         clear.setOnAction(actionEvent -> {
            amount.setText("");
            convertedAnswer.setText("");
            unitTypeSelector.setValue("");
-           fromUnitList.setValue("");
-           toUnitList.setValue("");
+           fromUnitList.setItems(null);
+           toUnitList.setItems(null);
            instructionsLabel.setText(infoString);
         });
 
@@ -237,8 +240,9 @@ public class Main extends Application {
         convertPane.setAlignment(Pos.CENTER);
 
         //adding all layout panes to the root layout node
-        root.getChildren().addAll(title, selectorPane, instructionspane, conversionPane, convertedAmountPane, convertPane);
+        root.getChildren().addAll(title, selectorPane, instructionsPane, conversionPane, convertedAmountPane, convertPane);
         root.setStyle("-fx-background-color: #333533");
+        root.setPadding(new Insets(15));
 
 
         Scene scene = new Scene(root);
