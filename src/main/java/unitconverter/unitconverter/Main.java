@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -14,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
+import java.text.DecimalFormat;
 import java.util.Locale;
 
 
@@ -27,10 +27,13 @@ public class Main extends Application {
 
     private final String [] lengthUnitsList = {"mm", "cm", "in", "ft", "yd", "m", "km", "mile"};
 
-    private final String [] massUnitsList = {"mg", "g", "oz", "lb", "kg", "stone", "metric ton", "short ton (US)",
-            "long ton (UK)"};
+    private final String [] massUnitsList = {"mg", "g", "oz", "lb", "kg", "stone", "mt", "st",
+            "lt"};
 
     private final String [] unitsList = {"Speed", "Mass", "Length"};
+
+    private String infoString = "Select the unit you would like to convert from and \n" +
+            " the unit you want to convert to below: ";
 
     @Override
     public void start(Stage stage) {
@@ -44,15 +47,22 @@ public class Main extends Application {
         //Creating root layout pane
         VBox root = new VBox(30);
 
+
+
+        //setting label
+        Label headerTitle = new Label("Welcome to your personal unit converter!");
+        headerTitle.setStyle("-fx-text-fill: #cfdbd5" +
+                "");
+
         //setting and placing title
-        HBox title = new HBox(new Label("Welcome to your personal unit converter!"));
+        HBox title = new HBox(headerTitle);
 
         //setting style and positioning for the title
         title.getStyleClass().addAll("text", "h1", "strong");
         title.setAlignment(Pos.CENTER);
 
 
-        //Maybe put the unit names in an array list or find a way to get all the names that extend UNIT
+        //TODO Maybe put the unit names in an array list or find a way to get all the names that extend UNIT
         //placing and setting the combo box and adding it to the layout
         ObservableList <String> units = FXCollections.observableArrayList(unitsList);
         ComboBox<String> unitTypeSelector = new ComboBox<>(units);
@@ -60,11 +70,11 @@ public class Main extends Application {
         selectorPane.setAlignment(Pos.CENTER);
 
         //placing, setting label and styling for the information paragraph
-        Label instructions = new Label("Select the unit you would like to convert from and \n" +
-                " the unit you want to convert to below: ");
-        instructions.getStyleClass().addAll("text", "h3", "strong");
-        instructions.wrapTextProperty();
-        HBox instructionspane = new HBox(instructions);
+        Label instructionsLabel = new Label(infoString);
+        instructionsLabel.getStyleClass().addAll("text", "h3", "strong");
+        instructionsLabel.setStyle("-fx-text-fill: #cfdbd5");
+        instructionsLabel.wrapTextProperty();
+        HBox instructionspane = new HBox(instructionsLabel);
         instructionspane.setAlignment(Pos.CENTER);
 
 
@@ -73,8 +83,8 @@ public class Main extends Application {
                 @Override
                 public void handle(ActionEvent actionEvent) {
             selectedUnit = unitTypeSelector.getValue();
-            instructions.setText("Select the " + selectedUnit.toLowerCase(Locale.ROOT) + " unit you would like to convert from and \n" +
-                    " the unit you want to convert to below: ");
+            instructionsLabel.setText("Select the " + selectedUnit.toLowerCase(Locale.ROOT) + " unit you would like to " +
+                    "convert from and \n the unit you want to convert to below: ");
 
             //units dropdown speed class
             ObservableList <String> speed = FXCollections.observableArrayList(speedUnitsList);
@@ -114,6 +124,7 @@ public class Main extends Application {
             };
 
         Label convertToLabel = new Label("Convert to which unit: ");
+        convertToLabel.setStyle("-fx-text-fill: #f5cb5c");
 
             //setting on action
         unitTypeSelector.setOnAction(dropdownClickEvent);
@@ -153,19 +164,21 @@ public class Main extends Application {
                 String toUnit = toUnitList.getValue();
 
                 //Converting the values to the corresponding units
+                Format f1 = new Format();
                 switch (selectedUnit) {
                     case "Speed" -> {
                         Speed s1 = new Speed();
-                        convertedAnswer.setText("Converted Value: " + Double.toString(s1.convert(fromUnit, toUnit, damount)));
+//                        format(s1.convert(fromUnit, toUnit, damount));
+                        convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)));
 
                     }
                     case "Length" -> {
                         Length l1 = new Length();
-                        convertedAnswer.setText("Converted Value: " + Double.toString(l1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
-                        convertedAnswer.setText("Converted Value: " + Double.toString(m1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)));
                     }
                 }
             } else {
@@ -178,17 +191,34 @@ public class Main extends Application {
             }
         });
 
+        //TODO add a clear button
+        //setting the reset button
+        Button reset = new Button("reset");
+        reset.setOnAction(actionEvent -> {
+           amount.setText("");
+           convertedAnswer.setText("");
+           unitTypeSelector.setValue("");
+           fromUnitList.setValue("");
+           toUnitList.setValue("");
+           instructionsLabel.setText(infoString);
+        });
+
+        //styling the answer
+        convertedAnswer.setStyle("-fx-text-fill: #f5cb5c");
+
         //placing and setting the pane to print out the value
         HBox convertedAmountPane = new HBox(convertedAnswer);
         convertedAmountPane.setAlignment(Pos.CENTER);
 
+
         //placing and setting the pane for the convert button
-        HBox convertPane = new HBox(convert);
+        HBox convertPane = new HBox(15,convert, reset);
         convertPane.setAlignment(Pos.CENTER);
 
         //adding all layout panes to the root layout node
         root.getChildren().addAll(title, selectorPane, instructionspane, conversionPane, convertedAmountPane, convertPane);
-        root.setPadding(new Insets(25, 0, 25, 0));
+        root.setStyle("-fx-background-color: #333533");
+
 
         Scene scene = new Scene(root);
 
@@ -202,5 +232,6 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+
 
 }

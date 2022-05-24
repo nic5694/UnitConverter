@@ -1,6 +1,6 @@
 package unitconverter.unitconverter;
 
-public class Mass extends Unit{
+public class Mass extends  Unit{
     public Mass() {
         //adding conversion rates to the hashtable
         //the factors are the factors needed to convert to the main unit of measurement kg
