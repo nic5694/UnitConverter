@@ -139,11 +139,17 @@ public class Main extends Application {
         //Setting text prompt
         amount.setPromptText("Converting unit value");
 
+        //creating and styling the print significant digit checkbox
+        CheckBox significantDigits = new CheckBox("Print only significant digits");
+        significantDigits.setSelected(true);
+        significantDigits.setStyle("-fx-text-fill: #f5cb5c");
+
+
         HBox fromUnitPane = new HBox(15,amount,fromUnitList);
         HBox toUnitPane = new HBox(15, convertToLabel, toUnitList);
 
         //placing and adding elements to the layout HBox
-        HBox conversionPane = new HBox(50,fromUnitPane, toUnitPane);
+        HBox conversionPane = new HBox(50,fromUnitPane, toUnitPane, significantDigits);
         conversionPane.setAlignment(Pos.CENTER);
 
         //setting the convert button
@@ -176,16 +182,24 @@ public class Main extends Application {
                     case "Speed" -> {
                         Speed s1 = new Speed();
 //                        format(s1.convert(fromUnit, toUnit, damount));
+                        if (significantDigits.isSelected())
                         convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)));
-
+                        else
+                            convertedAnswer.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Length" -> {
                         Length l1 = new Length();
-                        convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)));
+                        if (significantDigits.isSelected())
+                            convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)));
+                        else
+                            convertedAnswer.setText(Double.toString(l1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
-                        convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)));
+                        if (significantDigits.isSelected())
+                            convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)));
+                        else
+                            convertedAnswer.setText(Double.toString(m1.convert(fromUnit, toUnit, damount)));
                     }
                 }
             } else {
