@@ -187,23 +187,23 @@ public class Main extends Application {
                         Speed s1 = new Speed();
 //                        format(s1.convert(fromUnit, toUnit, damount));
                         if (significantDigits.isSelected())
-                        convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
-                            convertedAnswer.setText("Converted Value: " + s1.convert(fromUnit, toUnit, damount));
+                            convertedAnswer.setText("Converted Value: " + s1.convert(fromUnit, toUnit, damount) + " " + toUnit);
                     }
                     case "Length" -> {
                         Length l1 = new Length();
                         if (significantDigits.isSelected())
-                            convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)));
+                            convertedAnswer.setText("Converted Value: " + f1.formater(l1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
-                            convertedAnswer.setText("Converted Value: " + l1.convert(fromUnit, toUnit, damount));
+                            convertedAnswer.setText("Converted Value: " + l1.convert(fromUnit, toUnit, damount) + " " + toUnit);
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
                         if (significantDigits.isSelected())
-                            convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)));
+                            convertedAnswer.setText("Converted Value: " + f1.formater(m1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
-                            convertedAnswer.setText("Converted Value: " + m1.convert(fromUnit, toUnit, damount));
+                            convertedAnswer.setText("Converted Value: " + m1.convert(fromUnit, toUnit, damount) + " " + toUnit);
                     }
                 }
             } else {

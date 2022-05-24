@@ -26,6 +26,22 @@ factors to convert to the standard unit of measurement of that said unit.
 This library was specifically designed around the ability to add features with ease and efficiency. The design 
 accommodates the possibility to add new features with minimal to no need of code refactoring or changing.
 
+##### UML
+
+<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\FinalUML.JPG" alt="UML diagram">
+
+---
+
+##### Pictures
+
+<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\Picture Application.JPG" alt="Picture of application">
+
+<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\Capture.JPG" alt="picture of application in action">
+
+<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\application.JPG" alt="picture of application with an entra feature">
+
+
+
 ---
 
 ### Licence
