@@ -15,14 +15,14 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.util.Locale;
-import java.util.Objects;
+
 
 public class Main extends Application {
     String selectedUnit ="";
     private final ComboBox<String> fromUnitList = new ComboBox<>();
     private final ComboBox<String> toUnitList = new ComboBox<>();
-    Label convamount = new Label("Converted Value: ");
 
+    private Label convertedAnswer = new Label();
     private final String [] speedUnitsList = {"m/s", "ft/s", "km/h", "mph", "kn"};
 
     private final String [] lengthUnitsList = {"mm", "cm", "in", "ft", "yd", "m", "km", "mile"};
@@ -37,7 +37,7 @@ public class Main extends Application {
         ///Setting stage
         stage.setTitle("Unit Converter");
         stage.setWidth(800);
-        stage.setHeight(500);
+        stage.setHeight(400);
         stage.setResizable(false);
         stage.centerOnScreen();
 
@@ -47,22 +47,25 @@ public class Main extends Application {
         //setting and placing title
         HBox title = new HBox(new Label("Welcome to your personal unit converter!"));
 
-        //setting style for the title
+        //setting style and positioning for the title
         title.getStyleClass().addAll("text", "h1", "strong");
+        title.setAlignment(Pos.CENTER);
 
 
         //Maybe put the unit names in an array list or find a way to get all the names that extend UNIT
-        //setting the combo box and adding it to the layout
+        //placing and setting the combo box and adding it to the layout
         ObservableList <String> units = FXCollections.observableArrayList(unitsList);
         ComboBox<String> unitTypeSelector = new ComboBox<>(units);
         HBox selectorPane = new HBox(unitTypeSelector);
+        selectorPane.setAlignment(Pos.CENTER);
 
-        //setting label and styling
+        //placing, setting label and styling for the information paragraph
         Label instructions = new Label("Select the unit you would like to convert from and \n" +
                 " the unit you want to convert to below: ");
         instructions.getStyleClass().addAll("text", "h3", "strong");
         instructions.wrapTextProperty();
         HBox instructionspane = new HBox(instructions);
+        instructionspane.setAlignment(Pos.CENTER);
 
 
             //creating the action dropdownClickEvent
@@ -110,14 +113,20 @@ public class Main extends Application {
                 }
             };
 
+        Label convertToLabel = new Label("Convert to which unit: ");
+
             //setting on action
         unitTypeSelector.setOnAction(dropdownClickEvent);
 
         //Setting text field
         TextField amount = new TextField();
 
-        //adding elements to the layout HBox
-        HBox conversionPane = new HBox(amount, fromUnitList, convamount, toUnitList);
+        HBox fromUnitPane = new HBox(15,amount,fromUnitList);
+        HBox toUnitPane = new HBox(15, convertToLabel, toUnitList);
+
+        //placing and adding elements to the layout HBox
+        HBox conversionPane = new HBox(50,fromUnitPane, toUnitPane);
+        conversionPane.setAlignment(Pos.CENTER);
 
         //setting the convert button
         Button convert = new Button("Convert");
@@ -147,15 +156,16 @@ public class Main extends Application {
                 switch (selectedUnit) {
                     case "Speed" -> {
                         Speed s1 = new Speed();
-                        convamount.setText(Double.toString(s1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " + Double.toString(s1.convert(fromUnit, toUnit, damount)));
+
                     }
                     case "Length" -> {
                         Length l1 = new Length();
-                        convamount.setText(Double.toString(l1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " + Double.toString(l1.convert(fromUnit, toUnit, damount)));
                     }
                     case "Mass" -> {
                         Mass m1 = new Mass();
-                        convamount.setText(Double.toString(m1.convert(fromUnit, toUnit, damount)));
+                        convertedAnswer.setText("Converted Value: " + Double.toString(m1.convert(fromUnit, toUnit, damount)));
                     }
                 }
             } else {
@@ -168,11 +178,17 @@ public class Main extends Application {
             }
         });
 
-        //setting the pane for the convert button
+        //placing and setting the pane to print out the value
+        HBox convertedAmountPane = new HBox(convertedAnswer);
+        convertedAmountPane.setAlignment(Pos.CENTER);
+
+        //placing and setting the pane for the convert button
         HBox convertPane = new HBox(convert);
+        convertPane.setAlignment(Pos.CENTER);
 
         //adding all layout panes to the root layout node
-        root.getChildren().addAll(title, selectorPane, instructionspane, conversionPane, convertPane);
+        root.getChildren().addAll(title, selectorPane, instructionspane, conversionPane, convertedAmountPane, convertPane);
+        root.setPadding(new Insets(25, 0, 25, 0));
 
         Scene scene = new Scene(root);
 
@@ -186,4 +202,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         launch();
     }
+
 }
