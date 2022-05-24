@@ -132,14 +132,15 @@ public class Main extends Application {
                 }
             };
 
-        Label convertToLabel = new Label("Convert to which unit: ");
+        Label convertToLabel = new Label("Convert to: ");
         convertToLabel.setStyle("-fx-text-fill: #f5cb5c");
 
             //setting on action
         unitTypeSelector.setOnAction(dropdownClickEvent);
 
-        //Setting text field
+        //Setting text field and text prompt
         TextField amount = new TextField();
+        amount.setPromptText("Converting unit value");
 
         HBox fromUnitPane = new HBox(15,amount,fromUnitList);
         HBox toUnitPane = new HBox(15, convertToLabel, toUnitList);
