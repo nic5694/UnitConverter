@@ -12,10 +12,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
-
-import java.text.DecimalFormat;
 import java.util.Locale;
 
+
+//TODO before handing it
+/*
+MAke a New UML and README look on how ot write one
+TRy and make a placeholder for the textbo
+try and space more the objects
+make video to hand in
+clean up code
+add comments in the code
+check for comments left behind and take out the TODO's
+ */
 
 public class Main extends Application {
     String selectedUnit ="";
