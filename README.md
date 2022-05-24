@@ -28,17 +28,17 @@ accommodates the possibility to add new features with minimal to no need of code
 
 ##### UML
 
-<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\FinalUML.JPG" alt="UML diagram">
+<img src="Pictures/FinalUML.JPG" alt="UML diagram">
 
 ---
 
 ##### Pictures
 
-<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\Picture Application.JPG" alt="Picture of application">
+<img src="Pictures/Picture Application.JPG" alt="Picture of application">
 
-<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\Capture.JPG" alt="picture of application in action">
+<img src="Pictures/conversionpictureformatted.JPG" alt="picture of application in action">
 
-<img src="C:\Users\nicho\Desktop\Semester 2 Computer science Champlain college\Java 2\Final Project\application.JPG" alt="picture of application with an entra feature">
+<img src="Pictures/conversionpictureunformatted.JPG" alt="picture of application with an entra feature">
 
 
 
