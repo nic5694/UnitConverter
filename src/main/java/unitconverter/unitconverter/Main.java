@@ -17,8 +17,7 @@ import java.util.Locale;
 
 //TODO before handing it
 /*
-MAke a New UML and README look on how ot write one
-TRy and make a placeholder for the textbo
+MAke a New UML
 try and space more the objects
 make video to hand in
 clean up code
@@ -31,7 +30,7 @@ public class Main extends Application {
     private final ComboBox<String> fromUnitList = new ComboBox<>();
     private final ComboBox<String> toUnitList = new ComboBox<>();
 
-    private Label convertedAnswer = new Label();
+    private final Label convertedAnswer = new Label();
     private final String [] speedUnitsList = {"m/s", "ft/s", "km/h", "mph", "kn"};
 
     private final String [] lengthUnitsList = {"mm", "cm", "in", "ft", "yd", "m", "km", "mile"};
@@ -41,8 +40,9 @@ public class Main extends Application {
 
     private final String [] unitsList = {"Speed", "Mass", "Length"};
 
-    private String infoString = "Select the unit you would like to convert from and \n" +
+    private final String infoString = "Select the unit you would like to convert from and \n" +
             " the unit you want to convert to below: ";
+    TextField amount = new TextField();
 
     @Override
     public void start(Stage stage) {
@@ -59,9 +59,8 @@ public class Main extends Application {
 
 
         //setting label
-        Label headerTitle = new Label("Welcome to your personal unit converter!");
-        headerTitle.setStyle("-fx-text-fill: #cfdbd5" +
-                "");
+        Label headerTitle = new Label("Dimensional Analysis Calculator");
+        headerTitle.setStyle("-fx-text-fill: #cfdbd5");
 
         //setting and placing title
         HBox title = new HBox(headerTitle);
@@ -70,66 +69,65 @@ public class Main extends Application {
         title.getStyleClass().addAll("text", "h1", "strong");
         title.setAlignment(Pos.CENTER);
 
+        //Adding label for unit drop-down
+        Label unitLabel = new Label("Unit type you would like to be converting: ");
+        unitLabel.setStyle("-fx-text-fill: #f5cb5c");
 
-        //TODO Maybe put the unit names in an array list or find a way to get all the names that extend UNIT
-        //placing and setting the combo box and adding it to the layout
+        //placing and setting the combo box and adding it to the layout with the label
         ObservableList <String> units = FXCollections.observableArrayList(unitsList);
         ComboBox<String> unitTypeSelector = new ComboBox<>(units);
-        HBox selectorPane = new HBox(unitTypeSelector);
+        HBox selectorPane = new HBox(unitLabel, unitTypeSelector);
         selectorPane.setAlignment(Pos.CENTER);
 
         //placing, setting label and styling for the information paragraph
         Label instructionsLabel = new Label(infoString);
         instructionsLabel.getStyleClass().addAll("text", "h3", "strong");
         instructionsLabel.setStyle("-fx-text-fill: #cfdbd5");
-        instructionsLabel.wrapTextProperty();
         HBox instructionspane = new HBox(instructionsLabel);
         instructionspane.setAlignment(Pos.CENTER);
 
 
             //creating the action dropdownClickEvent
-            EventHandler<ActionEvent> dropdownClickEvent = new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-            selectedUnit = unitTypeSelector.getValue();
-            instructionsLabel.setText("Select the " + selectedUnit.toLowerCase(Locale.ROOT) + " unit you would like to " +
-                    "convert from and \n the unit you want to convert to below: ");
+            EventHandler<ActionEvent> dropdownClickEvent = actionEvent -> {
+        selectedUnit = unitTypeSelector.getValue();
+        instructionsLabel.setText("Select the " + selectedUnit.toLowerCase(Locale.ROOT) + " unit you would like to " +
+                "convert from and \n the unit you want to convert to below: ");
+        amount.setText("");
 
-            //units dropdown speed class
-            ObservableList <String> speed = FXCollections.observableArrayList(speedUnitsList);
-            //units dropdown length class
-            ObservableList <String> length = FXCollections.observableArrayList(lengthUnitsList);
-            //units dropdown mass class
-            ObservableList <String> mass = FXCollections.observableArrayList(massUnitsList);
+        //units dropdown speed class
+        ObservableList <String> speed = FXCollections.observableArrayList(speedUnitsList);
+        //units dropdown length class
+        ObservableList <String> length = FXCollections.observableArrayList(lengthUnitsList);
+        //units dropdown mass class
+        ObservableList <String> mass = FXCollections.observableArrayList(massUnitsList);
 
-            if(selectedUnit !=null) {
-                //setting dropdowns for the type of Unit conversion chosen by the user
-                switch (selectedUnit) {
-                    case "Speed" -> {
-                        fromUnitList.show();
-                        fromUnitList.setItems(speed);
-                        toUnitList.show();
-                        toUnitList.setItems(speed);
-                    }
-                    case "Length" -> {
-                        fromUnitList.show();
-                        fromUnitList.setItems(length);
-                        toUnitList.show();
-                        toUnitList.setItems(length);
-                    }
-                    case "Mass" -> {
-                        fromUnitList.show();
-                        fromUnitList.setItems(mass);
-                        toUnitList.show();
-                        toUnitList.setItems(mass);
-                    }
+        if(selectedUnit !=null) {
+            //setting dropdowns for the type of Unit conversion chosen by the user
+            switch (selectedUnit) {
+                case "Speed" -> {
+                    fromUnitList.show();
+                    fromUnitList.setItems(speed);
+                    toUnitList.show();
+                    toUnitList.setItems(speed);
+                }
+                case "Length" -> {
+                    fromUnitList.show();
+                    fromUnitList.setItems(length);
+                    toUnitList.show();
+                    toUnitList.setItems(length);
+                }
+                case "Mass" -> {
+                    fromUnitList.show();
+                    fromUnitList.setItems(mass);
+                    toUnitList.show();
+                    toUnitList.setItems(mass);
                 }
             }
-            else {
-                fromUnitList.hide();
-                toUnitList.hide();
-            }
-                }
+        }
+        else {
+            fromUnitList.hide();
+            toUnitList.hide();
+        }
             };
 
         Label convertToLabel = new Label("Convert to: ");
@@ -138,8 +136,7 @@ public class Main extends Application {
             //setting on action
         unitTypeSelector.setOnAction(dropdownClickEvent);
 
-        //Setting text field and text prompt
-        TextField amount = new TextField();
+        //Setting text prompt
         amount.setPromptText("Converting unit value");
 
         HBox fromUnitPane = new HBox(15,amount,fromUnitList);
@@ -162,7 +159,7 @@ public class Main extends Application {
                         "too as well as entering a valid number in the text field.");
                 blank.showAndWait();
                 //checking if user enters a valid entry
-            }else if(amount.getText().matches("^([0-9]+\\.?[0-9]*)$")) {
+            }else if(amount.getText().matches("^(\\d+\\.?\\d*)$")) {
                 try {
                     damount = Double.parseDouble(amount.getText());
                 } catch (NumberFormatException e) {
@@ -201,10 +198,10 @@ public class Main extends Application {
             }
         });
 
-        //TODO add a clear button
+
         //setting the reset button
-        Button reset = new Button("reset");
-        reset.setOnAction(actionEvent -> {
+        Button clear = new Button("clear");
+        clear.setOnAction(actionEvent -> {
            amount.setText("");
            convertedAnswer.setText("");
            unitTypeSelector.setValue("");
@@ -222,7 +219,7 @@ public class Main extends Application {
 
 
         //placing and setting the pane for the convert button
-        HBox convertPane = new HBox(15,convert, reset);
+        HBox convertPane = new HBox(15,convert, clear);
         convertPane.setAlignment(Pos.CENTER);
 
         //adding all layout panes to the root layout node
