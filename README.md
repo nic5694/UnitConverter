@@ -26,13 +26,15 @@ factors to convert to the standard unit of measurement of that said unit.
 This library was specifically designed around the ability to add features with ease and efficiency. The design 
 accommodates the possibility to add new features with minimal to no need of code refactoring or changing.
 
-##### UML
+---
+
+### UML
 
 <img src="Pictures/FinalUML.JPG" alt="UML diagram">
 
 ---
 
-##### Pictures
+### Pictures
 
 <img src="Pictures/Picture Application.JPG" alt="Picture of application">
 

@@ -16,17 +16,6 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import java.util.Locale;
 
-
-//TODO before handing it
-/*
-MAke a New UML
-try and space more the objects
-make video to hand in
-clean up code
-add comments in the code
-check for comments left behind and take out the TODO's
- */
-
 public class Main extends Application {
     private String selectedUnit ="";
     private final ComboBox<String> fromUnitList = new ComboBox<>();
