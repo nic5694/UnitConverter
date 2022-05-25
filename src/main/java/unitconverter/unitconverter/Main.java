@@ -175,7 +175,7 @@ public class Main extends Application {
                     case "Speed" -> {
                         Speed s1 = new Speed();
                         if (significantDigits.isSelected())
-                        convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
+                            convertedAnswer.setText("Converted Value: " + f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
                             convertedAnswer.setText("Converted Value: " + s1.convert(fromUnit, toUnit, damount) + " " + toUnit);
                     }
