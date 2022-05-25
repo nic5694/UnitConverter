@@ -33,7 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         ///Setting stage
-        stage.setTitle("Unit Converter");
+        stage.setTitle("Dimensional Analysis Calculator");
         stage.setWidth(800);
         stage.setHeight(400);
         stage.setResizable(false);
