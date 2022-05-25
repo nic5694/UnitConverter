@@ -174,7 +174,6 @@ public class Main extends Application {
                 switch (selectedUnit) {
                     case "Speed" -> {
                         Speed s1 = new Speed();
-//                        format(s1.convert(fromUnit, toUnit, damount));
                         if (significantDigits.isSelected())
                         convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
