@@ -16,17 +16,6 @@ import javafx.stage.Stage;
 import org.kordamp.bootstrapfx.BootstrapFX;
 import java.util.Locale;
 
-
-//TODO before handing it
-/*
-MAke a New UML
-try and space more the objects
-make video to hand in
-clean up code
-add comments in the code
-check for comments left behind and take out the TODO's
- */
-
 public class Main extends Application {
     private String selectedUnit ="";
     private final ComboBox<String> fromUnitList = new ComboBox<>();
@@ -44,7 +33,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         ///Setting stage
-        stage.setTitle("Unit Converter");
+        stage.setTitle("Dimensional Analysis Calculator");
         stage.setWidth(800);
         stage.setHeight(400);
         stage.setResizable(false);
@@ -185,9 +174,8 @@ public class Main extends Application {
                 switch (selectedUnit) {
                     case "Speed" -> {
                         Speed s1 = new Speed();
-//                        format(s1.convert(fromUnit, toUnit, damount));
                         if (significantDigits.isSelected())
-                        convertedAnswer.setText("Converted Value: " +  f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
+                            convertedAnswer.setText("Converted Value: " + f1.formater(s1.convert(fromUnit, toUnit, damount)) + " " + toUnit);
                         else
                             convertedAnswer.setText("Converted Value: " + s1.convert(fromUnit, toUnit, damount) + " " + toUnit);
                     }
